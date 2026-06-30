@@ -1,57 +1,86 @@
+import java.util.ArrayList;
+
 public class Hotel {
-    Room[] rooms = new Room[5];
+
+    private ArrayList<Room> rooms = new ArrayList<>();
+    private ArrayList<Reservation> reservations = new ArrayList<>();
 
     public Hotel() {
-        rooms[0] = new Room(101, "Single");
-        rooms[1] = new Room(102, "Double");
-        rooms[2] = new Room(103, "Single");
-        rooms[3] = new Room(104, "Deluxe");
-        rooms[4] = new Room(105, "Suite");
+        // Add default rooms
+        rooms.add(new Room(101, "Single", 1000));
+        rooms.add(new Room(102, "Double", 1500));
+        rooms.add(new Room(103, "Deluxe", 2500));
+        rooms.add(new Room(104, "Suite", 3500));
     }
 
-    public void checkAvailability() {
-        System.out.println("\nAvailable Rooms:");
+    // Display all rooms
+    public void displayRooms() {
+        System.out.println("\n===== Room Details =====");
         for (Room room : rooms) {
-            if (!room.isBooked) {
-                room.displayRoom();
-            }
+            room.displayRoom();
         }
     }
 
-    public boolean bookRoom(int roomNo) {
+    // Book a room
+    public void bookRoom(Customer customer, int roomNumber, int reservationId) {
+
         for (Room room : rooms) {
-            if (room.roomNo == roomNo && !room.isBooked) {
-                room.isBooked = true;
-                return true;
+
+            if (room.getRoomNumber() == roomNumber) {
+
+                if (!room.isBooked()) {
+
+                    room.bookRoom();
+
+                    Reservation reservation =
+                            new Reservation(reservationId, customer, room);
+
+                    reservations.add(reservation);
+
+                    System.out.println("\nRoom Booked Successfully!");
+                    reservation.displayReservation();
+
+                } else {
+                    System.out.println("Room is already booked.");
+                }
+
+                return;
             }
         }
-        return false;
+
+        System.out.println("Room not found.");
     }
 
-    public boolean checkout(int roomNo) {
-        for (Room room : rooms) {
-            if (room.roomNo == roomNo && room.isBooked) {
-                room.isBooked = false;
-                return true;
+    // Cancel booking
+    public void cancelBooking(int roomNumber) {
+
+        for (Reservation reservation : reservations) {
+
+            if (reservation.getRoom().getRoomNumber() == roomNumber) {
+
+                reservation.getRoom().cancelBooking();
+
+                reservations.remove(reservation);
+
+                System.out.println("Booking Cancelled Successfully!");
+
+                return;
             }
         }
-        return false;
+
+        System.out.println("No reservation found.");
     }
 
-    public void generateBill(int days, int roomNo) {
-        int rate = 1000;
+    // View Reservations
+    public void displayReservations() {
 
-        for (Room room : rooms) {
-            if (room.roomNo == roomNo) {
-                if (room.roomType.equals("Double"))
-                    rate = 1500;
-                else if (room.roomType.equals("Deluxe"))
-                    rate = 2500;
-                else if (room.roomType.equals("Suite"))
-                    rate = 4000;
-            }
+        if (reservations.isEmpty()) {
+            System.out.println("No Reservations Found.");
+            return;
         }
 
-        System.out.println("Total Bill = Rs. " + (days * rate));
+        for (Reservation reservation : reservations) {
+            reservation.displayReservation();
+        }
     }
 }
