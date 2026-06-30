@@ -1,83 +1,83 @@
 import java.util.Scanner;
 
 public class Main {
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+
         Hotel hotel = new Hotel();
 
-        System.out.print("Enter Customer ID: ");
-        int id = sc.nextInt();
-        sc.nextLine();
+        int customerId = 1;
+        int reservationId = 1001;
 
-        System.out.print("Enter Customer Name: ");
-        String name = sc.nextLine();
+        while (true) {
 
-        System.out.print("Enter Phone Number: ");
-        String phone = sc.nextLine();
+            System.out.println("\n========== HOTEL ROOM RESERVATION SYSTEM ==========");
+            System.out.println("1. View Rooms");
+            System.out.println("2. Book Room");
+            System.out.println("3. Cancel Booking");
+            System.out.println("4. View Reservations");
+            System.out.println("5. Exit");
+            System.out.print("Enter your choice: ");
 
-        Customer customer = new Customer(id, name, phone);
-
-        int choice;
-
-        do {
-            System.out.println("\n----- HOTEL ROOM RESERVATION SYSTEM -----");
-            System.out.println("1. Display Customer");
-            System.out.println("2. Check Room Availability");
-            System.out.println("3. Book Room");
-            System.out.println("4. Checkout");
-            System.out.println("5. Generate Bill");
-            System.out.println("6. Exit");
-            System.out.print("Enter Choice: ");
-
-            choice = sc.nextInt();
+            int choice = sc.nextInt();
 
             switch (choice) {
 
                 case 1:
-                    customer.displayCustomer();
+                    hotel.displayRooms();
                     break;
 
                 case 2:
-                    hotel.checkAvailability();
+
+                    sc.nextLine();
+
+                    System.out.print("Enter Customer Name: ");
+                    String name = sc.nextLine();
+
+                    System.out.print("Enter Phone Number: ");
+                    String phone = sc.nextLine();
+
+                    System.out.print("Enter Room Number: ");
+                    int roomNo = sc.nextInt();
+
+                    Customer customer =
+                            new Customer(customerId++, name, phone);
+
+                    hotel.bookRoom(customer, roomNo, reservationId++);
+
                     break;
 
                 case 3:
-                    System.out.print("Enter Room Number: ");
-                    int roomNo = sc.nextInt();
-                    if (hotel.bookRoom(roomNo))
-                        System.out.println("Room Booked Successfully.");
-                    else
-                        System.out.println("Room Not Available.");
+
+                    System.out.print("Enter Room Number to Cancel: ");
+                    int cancelRoom = sc.nextInt();
+
+                    hotel.cancelBooking(cancelRoom);
+
                     break;
 
                 case 4:
-                    System.out.print("Enter Room Number: ");
-                    roomNo = sc.nextInt();
-                    if (hotel.checkout(roomNo))
-                        System.out.println("Checkout Successful.");
-                    else
-                        System.out.println("Invalid Room Number.");
+
+                    hotel.displayReservations();
+
                     break;
 
                 case 5:
-                    System.out.print("Enter Room Number: ");
-                    roomNo = sc.nextInt();
-                    System.out.print("Enter Number of Days: ");
-                    int days = sc.nextInt();
-                    hotel.generateBill(days, roomNo);
-                    break;
 
-                case 6:
                     System.out.println("Thank You!");
-                    break;
+                    sc.close();
+                    System.exit(0);
 
                 default:
-                    System.out.println("Invalid Choice.");
+
+                    System.out.println("Invalid Choice!");
+
             }
 
-        } while (choice != 6);
+        }
 
-        sc.close();
     }
+
 }
