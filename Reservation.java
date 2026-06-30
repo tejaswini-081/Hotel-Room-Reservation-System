@@ -1,34 +1,33 @@
 public class Reservation {
+    private int reservationId;
+    private Customer customer;
+    private Room room;
 
-    Customer customer;
-    Room room;
-    int days;
-
-    public Reservation(Customer customer, Room room, int days) {
+    public Reservation(int reservationId, Customer customer, Room room) {
+        this.reservationId = reservationId;
         this.customer = customer;
         this.room = room;
-        this.days = days;
+    }
+
+    public int getReservationId() {
+        return reservationId;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public Room getRoom() {
+        return room;
     }
 
     public void displayReservation() {
-        System.out.println("\n----- Reservation Details -----");
-        customer.displayCustomer();
-        room.displayRoom();
-        System.out.println("Number of Days: " + days);
-    }
-
-    public void generateBill() {
-        int rate = 1000;
-
-        if (room.roomType.equals("Double")) {
-            rate = 1500;
-        } else if (room.roomType.equals("Deluxe")) {
-            rate = 2500;
-        } else if (room.roomType.equals("Suite")) {
-            rate = 4000;
-        }
-
-        int total = rate * days;
-        System.out.println("Total Bill = Rs. " + total);
+        System.out.println("\n===== Reservation Details =====");
+        System.out.println("Reservation ID : " + reservationId);
+        customer.displayDetails();
+        System.out.println("Room Number    : " + room.getRoomNumber());
+        System.out.println("Room Type      : " + room.getRoomType());
+        System.out.println("Price          : ₹" + room.getPrice());
+        System.out.println("===============================");
     }
 }
